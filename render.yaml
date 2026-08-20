@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: usd-intelligence-api
+    runtime: node
+    rootDir: server
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: FRED_API_KEY
+        sync: false
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        sync: false
