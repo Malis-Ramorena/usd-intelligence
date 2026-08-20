@@ -32,8 +32,6 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
   "https://Malis-Ramorena.github.io",
 ];
 
@@ -46,7 +44,14 @@ app.use(
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      // Vite may use any available local development port
+      // (for example 5173, 5174, or 5175). Allow localhost
+      // and loopback origins without changing the application
+      // API or frontend configuration.
+      const isLocalDevelopmentOrigin =
+        /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+      if (isLocalDevelopmentOrigin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
